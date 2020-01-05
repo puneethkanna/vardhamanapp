@@ -560,7 +560,7 @@ def check_cred(rno,pas):
 		print("In check_pas",finalurl)
 		return jsonify({'valid':'True','rollno': rno, 'pas': pas, 'name': name })
 	else:
-		return jsonify({'valid':'False','rollno': rno, 'pas': pas, 'name': name })
+		return jsonify({'valid':'False'})
 @app.route('/')
 def demo():
 	return jsonify({ 'text' : "Hello" })
