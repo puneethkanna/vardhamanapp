@@ -579,7 +579,7 @@ def check(pas):
 	rno = pas[0:10]
 	print(rno)
 	pas = pas[13:]
-  print(pas)
+  	print(pas)
 	#check_cred(rno, pas)
 	return jsonify({ 'RollNO' : rno, 'Password': pas })
 
