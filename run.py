@@ -541,7 +541,7 @@ def push(message):
 		bot.reply_to(message,"Attendance is:"+a) 
 '''
 #@app.route('/', methods=['POST'])
-@app.route("/login/<rno>/<pas>", methods=['GET'])
+@app.route("/login/<string:pas>", methods=['GET'])
 def check_cred(rno,pas):
 	br = RoboBrowser(history=True, parser="html.parser")
 	br = RoboBrowser(user_agent='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6')
@@ -556,19 +556,11 @@ def check_cred(rno,pas):
 		bt=br.parsed()
 		th=br.select("th")#3
 		td=br.select("td")#8
-		name = str(th[3].text.strip())+":"+str(td[8].text.strip())
+		name = str(td[8].text.strip())
 		print("In check_pas",finalurl)
-		return "true"
-		'''jsonify({
-			'valid':'True'
-			'rollno':rno
-			'name': name
-		)}'''
+		return jsonify({'valid':'True','rollno': rno, 'pas': pas, 'name': name })
 	else:
-		return "flase"
-		'''return jsonify({
-			'valid':'False'
-		)}'''
+		return jsonify({'valid':'False','rollno': rno, 'pas': pas, 'name': name })
 @app.route('/')
 def demo():
 	return jsonify({ 'text' : "Hello" })
@@ -578,10 +570,9 @@ def check(pas):
 	t = list(pas)
 	rno = pas[0:10]
 	print(rno)
-	pas = pas[13:]
-	print(pas)
-#check_cred(rno, pas)
-	return jsonify({ 'RollNO' : rno, 'Password': pas })
+	pas = "#"+pas[11:]
+	t = check_cred(rno, pas)
+	return (t)
 
 if __name__ == "__main__":
 	port = int(os.environ.get('PORT', 5000))
