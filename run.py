@@ -580,7 +580,7 @@ def check(pas):
 	print(rno)
 	pas = pas[13:]
 	print(pas)
-	#check_cred(rno, pas)
+#check_cred(rno, pas)
 	return jsonify({ 'RollNO' : rno, 'Password': pas })
 
 if __name__ == "__main__":
