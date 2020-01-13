@@ -13,7 +13,7 @@ import os
 from io import StringIO
 #import marks as gpa
 #import applyper as papply
-#import attendance as atd
+import attendance as atd
 
 #user_dict={}
 
@@ -573,6 +573,30 @@ def check(pas):
 	pas = "#"+pas[11:]
 	t = check_cred(rno, pas)
 	return (t)
+
+@app.route("/attendance/<string:pas>", methods=['GET'])
+def attendance(pas):
+	print(pas)
+	t = list(pas)
+	rno = pas[0:10]
+	print(rno)
+	pas = "#"+pas[11:]
+	t = atd.attendance(rno, pas)
+#	t = "efeskjjdk"
+	try:
+		try:
+			t = int(t)
+			return jsonify({'type':'int','attendance': t })
+		except:
+			pass
+		try:
+			t = float(t)
+			return jsonify({'type':'float','attendance': t })
+		except ValueError:
+			return jsonify({'type':'string','attendance': t })
+	except ValueError:
+		return jsonify({'type':'string','attendance': t })
+
 
 if __name__ == "__main__":
 	port = int(os.environ.get('PORT', 5000))
