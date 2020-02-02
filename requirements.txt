@@ -10,3 +10,6 @@ cffi==1.11.5
 click==6.7
 Flask==1.0
 robobrowser==0.5.3
+json5==0.8.5
+jsonschema==3.2.0
+simplejson==3.13.2
