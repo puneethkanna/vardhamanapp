@@ -1,6 +1,6 @@
 #This is the code for vardhaman app API
 #import re
-from robobrowser import RoboBrowser9
+from robobrowser import RoboBrowser
 from bs4 import BeautifulSoup
 import time as tim
 #from functools import wraps
