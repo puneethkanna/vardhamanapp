@@ -68,6 +68,13 @@ def period_attendance(rno,pas):
 		#break
 	except IndexError:
 		pass
-	pa = json.dumps(d)
-	print(type(pa))
-	return(pa)
+	if(not d):
+		d = {"status":"None"}
+		pa = json.dumps(d)
+		return(pa)
+	else:
+		temp_dict = {"status":"True"}
+		d.update(temp_dict)
+		pa = json.dumps(d)
+		print(type(pa))
+		return(pa)
