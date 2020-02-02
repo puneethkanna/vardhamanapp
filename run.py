@@ -1,6 +1,6 @@
 #This is the code for vardhaman app API
 #import re
-from robobrowser import RoboBrowser
+from robobrowser import RoboBrowser9
 from bs4 import BeautifulSoup
 import time as tim
 #from functools import wraps
@@ -596,7 +596,20 @@ def attendance(pas):
 			return jsonify({'type':'string','attendance': t })
 	except ValueError:
 		return jsonify({'type':'string','attendance': t })
-
+	
+@app.route("/period_attendance/<string:pas>", methods=['GET'])
+def period_attendance(pas):
+	print(pas)
+	t = list(pas)
+	rno = pas[0:10]
+	print(rno)
+	pas = "#"+pas[11:]
+	t = atd.period_attendance(rno, pas)
+	#try:
+	pa = json.loads(t)
+	#print(type(pa))
+	#temp = jsonify(pa)
+	return jsonify(pa)
 
 if __name__ == "__main__":
 	port = int(os.environ.get('PORT', 5000))
