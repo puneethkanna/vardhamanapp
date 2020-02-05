@@ -23,7 +23,7 @@ def attendance(rno,pas):
 	att = []
 	#print str(th[55].text.strip())+":"+str(th[56].text.strip())#attend
 	try:
-		for i in range(40,60):
+		for i in range(10,99):
 			if(str(th[i].text.strip())=="Attendance Percentage"):
 				return (str(th[i+1].text.strip()))
 				#if(finalurl != "http://studentscorner.vardhaman.org/"):
@@ -49,7 +49,7 @@ def period_attendance(rno,pas):
 	l=[]
 	att = []
 	try:
-		for i in range(9,37,4):
+		for i in range(1,49,4):
 			present=td[i+3].text.strip()#Present
 			period=td[i+1].text.strip()#Period
 			topic=td[i+2].text.strip()#Topic
