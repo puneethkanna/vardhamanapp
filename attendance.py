@@ -25,6 +25,7 @@ def attendance(rno,pas):
 	try:
 		for i in range(10,99):
 			if(str(th[i].text.strip())=="Attendance Percentage"):
+				print(str(th[i+1].text.strip()))
 				return (str(th[i+1].text.strip()))
 				#if(finalurl != "http://studentscorner.vardhaman.org/"):
 				#att.append("\033[1m"+str(th[i].text.strip())+" : *"+str(th[i+1].text.strip())+"*")	
