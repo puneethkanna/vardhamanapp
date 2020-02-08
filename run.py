@@ -556,8 +556,8 @@ def push(message):
 		
 @app.route("/login/<string:pas>", methods=['GET'])
 def check_cred(rno,pas):
-	#status = check_url()
-	if(flase):
+	status = check_url()
+	if(status == "down"):
 		return jsonify({'site':'down'})
 	else:
 		br = RoboBrowser(history=True, parser="html.parser")
@@ -598,8 +598,8 @@ def attendance(pas):
 	rno = pas[0:10]
 	print(rno)
 	pas = "#"+pas[11:]
-	#status = check_url()
-	if(false):
+	status = check_url()
+	if(status == "down"):
 		return jsonify({'site':'down'})
 	else:
 		t = atd.attendance(rno, pas)
@@ -625,8 +625,8 @@ def period_attendance(pas):
 	rno = pas[0:10]
 	print(rno)
 	pas = "#"+pas[11:]
-	#status = check_url()
-	if(flase):
+	status = check_url()
+	if(status == "down"):
 		return jsonify({'site':'down'})
 	else:
 		t = atd.period_attendance(rno, pas)
