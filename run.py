@@ -11,6 +11,8 @@ import json
 import os
 #from nltk.tokenize import word_tokenize
 from io import StringIO
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
 #import marks as gpa
 #import applyper as papply
 import attendance as atd
@@ -541,26 +543,41 @@ def push(message):
 		bot.reply_to(message,"Attendance is:"+a) 
 '''
 #@app.route('/', methods=['POST'])
+def check_url(timeout=7 ):
+	try:
+		urlopen("http://studentscorner.vardhaman.org",timeout=timeout).getcode() == 200
+		return("up")
+	except URLError as e:
+		print("Wrong URL",e)
+		return("down")
+	except socket.timeout as e:
+		print("Not working")
+		return("down")
+		
 @app.route("/login/<string:pas>", methods=['GET'])
 def check_cred(rno,pas):
-	br = RoboBrowser(history=True, parser="html.parser")
-	br = RoboBrowser(user_agent='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6')
-	br.open('http://studentscorner.vardhaman.org')
-	form = br.get_form(action="")
-	form["rollno"] = rno
-	form["wak"] = pas
-	br.submit_form(form)
-	checkrno=str(br.select)
-	if(rno in checkrno):
-		br.open("http://studentscorner.vardhaman.org/student_information.php")
-		bt=br.parsed()
-		th=br.select("th")#3
-		td=br.select("td")#8
-		name = str(td[8].text.strip())
-		print("In check_pas",finalurl)
-		return jsonify({'valid':'True','rollno': rno, 'pas': pas, 'name': name })
+	status = check_url()
+	if(status == "down"):
+		return jsonify({'site':'down'})
 	else:
-		return jsonify({'valid':'False'})
+		br = RoboBrowser(history=True, parser="html.parser")
+		br = RoboBrowser(user_agent='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6')
+		br.open('http://studentscorner.vardhaman.org')
+		form = br.get_form(action="")
+		form["rollno"] = rno
+		form["wak"] = pas
+		br.submit_form(form)
+		checkrno=str(br.select)
+		if(rno in checkrno):
+			br.open("http://studentscorner.vardhaman.org/student_information.php")
+			bt=br.parsed()
+			th=br.select("th")#3
+			td=br.select("td")#8
+			name = str(td[8].text.strip())
+			print("In check_pas",finalurl)
+			return jsonify({'valid':'True','rollno': rno, 'pas': pas, 'name': name })
+		else:
+			return jsonify({'valid':'False'})
 @app.route('/')
 def demo():
 	return jsonify({ 'text' : "Hello" })
@@ -581,21 +598,25 @@ def attendance(pas):
 	rno = pas[0:10]
 	print(rno)
 	pas = "#"+pas[11:]
-	t = atd.attendance(rno, pas)
+	status = check_url()
+	if(status == "down"):
+		return jsonify({'site':'down'})
+	else:
+		t = atd.attendance(rno, pas)
 #	t = "efeskjjdk"
-	try:
 		try:
-			t = int(t)
-			return jsonify({'type':'int','attendance': t })
-		except:
-			pass
-		try:
-			t = float(t)
-			return jsonify({'type':'float','attendance': t })
+			try:
+				t = int(t)
+				return jsonify({'type':'int','attendance': t })
+			except:
+				pass
+			try:
+				t = float(t)
+				return jsonify({'type':'float','attendance': t })
+			except ValueError:
+				return jsonify({'type':'string','attendance': t })
 		except ValueError:
 			return jsonify({'type':'string','attendance': t })
-	except ValueError:
-		return jsonify({'type':'string','attendance': t })
 	
 @app.route("/period_attendance/<string:pas>", methods=['GET'])
 def period_attendance(pas):
@@ -604,12 +625,16 @@ def period_attendance(pas):
 	rno = pas[0:10]
 	print(rno)
 	pas = "#"+pas[11:]
-	t = atd.period_attendance(rno, pas)
+	status = check_url()
+	if(status == "down"):
+		return jsonify({'site':'down'})
+	else:
+		t = atd.period_attendance(rno, pas)
 	#try:
-	pa = json.loads(t)
+		pa = json.loads(t)
 	#print(type(pa))
 	#temp = jsonify(pa)
-	return jsonify(pa)
+		return jsonify(pa)
 
 if __name__ == "__main__":
 	port = int(os.environ.get('PORT', 5000))
