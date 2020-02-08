@@ -543,7 +543,7 @@ def push(message):
 		bot.reply_to(message,"Attendance is:"+a) 
 '''
 #@app.route('/', methods=['POST'])
-'''def check_url(timeout=7 ):
+def check_url(timeout=7 ):
 	try:
 		urlopen("http://studentscorner.vardhaman.org",timeout=timeout).getcode() == 200
 		return("up")
@@ -552,7 +552,7 @@ def push(message):
 		return("down")
 	except socket.timeout as e:
 		print("Not working")
-		return("down")'''
+		return("down")
 		
 @app.route("/login/<string:pas>", methods=['GET'])
 def check_cred(rno,pas):
