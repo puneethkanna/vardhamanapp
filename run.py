@@ -586,6 +586,7 @@ def check(pas):
 	print(pas)
 	t = list(pas)
 	rno = pas[0:10]
+	rno = rno.upper()
 	print(rno)
 	pas = "#"+pas[11:]
 	t = check_cred(rno, pas)
@@ -596,6 +597,7 @@ def attendance(pas):
 	print(pas)
 	t = list(pas)
 	rno = pas[0:10]
+	rno = rno.upper()
 	print(rno)
 	pas = "#"+pas[11:]
 	status = check_url()
@@ -623,6 +625,7 @@ def period_attendance(pas):
 	print(pas)
 	t = list(pas)
 	rno = pas[0:10]
+	rno = rno.upper()
 	print(rno)
 	pas = "#"+pas[11:]
 	status = check_url()
