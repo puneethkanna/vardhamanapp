@@ -543,7 +543,7 @@ def push(message):
 		bot.reply_to(message,"Attendance is:"+a) 
 '''
 #@app.route('/', methods=['POST'])
-def check_url(timeout=7 ):
+def check_url(timeout=13 ):
 	try:
 		urlopen("http://studentscorner.vardhaman.org",timeout=timeout).getcode() == 200
 		return("up")
