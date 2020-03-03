@@ -14,19 +14,19 @@ def check_url(rno, pas, url):
                 'wak' : pas,
                 'ok' : 'SignIn'
             }
-        with requests.Session() as s:
-	response = s.post('http://studentscorner.vardhaman.org', data)
+	with requests.Session() as s:
+		response = s.post('http://studentscorner.vardhaman.org', data)
 #soup = BeautifulSoup(response.text, 'html.parser')
 #print(soup)
-	r = s.get(url)
-	soup = BeautifulSoup(r.text, 'html.parser')
-	print(r)
-	if(r.status == 404):
-		return("down")
+		r = s.get(url)
+		soup = BeautifulSoup(r.text, 'html.parser')
+		print(r)
+		if(r.status_code == 404):
+			return("down")
 
 def attendance(rno,pas):
-	stat = check(rno, pas, "http://studentscorner.vardhaman.org/student_attendance.php")
-	if(stat == "down")
+	stat = check_url(rno, pas, "http://studentscorner.vardhaman.org/student_attendance.php")
+	if(stat == "down"):
 		return("down")
 	else:
 		br = RoboBrowser(history=True, parser="html.parser")
@@ -48,17 +48,17 @@ def attendance(rno,pas):
 				if(str(th[i].text.strip())=="Attendance Percentage"):
 					print(str(th[i+1].text.strip()))
 					return (str(th[i+1].text.strip()))
-					#if(finalurl != "http://studentscorner.vardhaman.org/"):
-					#att.append("\033[1m"+str(th[i].text.strip())+" : *"+str(th[i+1].text.strip())+"*")	
-	#				bot.send_message(tid,str(th[i].text.strip())+" : *"+str(th[i+1].text.strip())+"*",parse_mode= 'Markdown')#attend
-
+				#if(finalurl != "http://studentscorner.vardhaman.org/"):
+				#att.append("\033[1m"+str(th[i].text.strip())+" : *"+str(th[i+1].text.strip())+"*")	
+#				bot.send_message(tid,str(th[i].text.strip())+" : *"+str(th[i+1].text.strip())+"*",parse_mode= 'Markdown')#attend
+				 
 		except IndexError:
 			return ("Attendance is Freesed.If attendance is not freesed you can see it in the website send the mail to the developer stating the issue.")
 #		bot.send_message(tid,"*Attendance is Freesed*.\nIf attendance is not freesed you can see it in the website send the mail to \n *vardhamanassistant@gmail.com*\nstating the issue.",parse_mode= 'Markdown')
 def period_attendance(rno,pas):
-	stat = check(rno, pas, "http://studentscorner.vardhaman.org/student_attendance.php")
-	if(stat == "down")
-		return jsonify({'atd_site':'down'})
+	stat = check_url(rno, pas, "http://studentscorner.vardhaman.org/student_attendance.php")
+	if(stat == "down"):
+		return("down")
 	else:
 		d = {}
 		br = RoboBrowser(history=True, parser="html.parser")
@@ -81,9 +81,9 @@ def period_attendance(rno,pas):
 				topic=td[i+2].text.strip()#Topic
 				present=present.upper()
 				topic=topic[0].upper()+topic[1:].lower()
-	#			print(td[i],present, period, topic)
+#				print(td[i],present, period, topic)
 				if(present=="PRESENT"):
-					#att.append("\033[1m"+str(td[i].text.strip())+"   "+str(td[i+1].text.strip())	+"   "+d+"  -  <b>"+t+"</b>")
+					#att.append("\033[1m"+str(td[i].text.strip())+"   "+str(td[i+1].text.strip())	+"   "+d+"  -<b>"+t+"</b>")
 					temp_dict = {str(td[i].text.strip()): present+"_-_"+period+"_-_"+topic}
 					d.update(temp_dict)
 				else:
@@ -104,3 +104,29 @@ def period_attendance(rno,pas):
 			pa = json.dumps(d)
 			print(type(pa))
 			return(pa)
+def date_wise_activity_diary(rno,pas):
+	br = RoboBrowser(history=True, parser="html.parser")
+	br = RoboBrowser(user_agent='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6')
+	br.open('http://studentscorner.vardhaman.org')
+	form = br.get_form(action="")
+	form["rollno"] = rno
+	form["wak"] = pas
+	br.submit_form(form)
+	br.open("http://studentscorner.vardhaman.org/Studentwise_AttendanceRegister.php")
+	bt=br.parsed()
+	th=br.select("th")#3
+	td=br.select("td")#8
+	l=[]
+	att = []
+	#print str(th[55].text.strip())+":"+str(th[56].text.strip())#attend
+	try:
+		for i in range(10,99):
+			if(str(th[i].text.strip())=="Attendance Percentage"):
+				print(str(th[i+1].text.strip()))
+				return (str(th[i+1].text.strip()))
+				#if(finalurl != "http://studentscorner.vardhaman.org/"):
+				#att.append("\033[1m"+str(th[i].text.strip())+" : *"+str(th[i+1].text.strip())+"*")	
+#				bot.send_message(tid,str(th[i].text.strip())+" : *"+str(th[i+1].text.strip())+"*",parse_mode= 'Markdown')#attend
+				 
+	except IndexError:
+		return ("Attendance is Freesed.If attendance is not freesed you can see it in the website send the mail to the developer stating the issue.")
