@@ -605,7 +605,8 @@ def attendance(pas):
 		return jsonify({'site':'down'})
 	else:
 		t = atd.attendance(rno, pas)
-#	t = "efeskjjdk"
+		if(t == "down"):
+			return jsonify({'atd_site':'down'})
 		try:
 			try:
 				t = int(t)
@@ -633,7 +634,8 @@ def period_attendance(pas):
 		return jsonify({'site':'down'})
 	else:
 		t = atd.period_attendance(rno, pas)
-	#try:
+		if(t == "down"):
+			return jsonify({'atd_site':'down'})
 		pa = json.loads(t)
 	#print(type(pa))
 	#temp = jsonify(pa)
