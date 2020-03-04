@@ -13,7 +13,7 @@ import os
 from io import StringIO
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
-#import marks as gpa
+import marks as gpa
 #import applyper as papply
 import attendance as atd
 
@@ -620,7 +620,36 @@ def attendance(pas):
 				return jsonify({'type':'string','attendance': t })
 		except ValueError:
 			return jsonify({'type':'string','attendance': t })
-	
+
+@app.route("/cgpa/<string:pas>", methods=['GET'])
+def cgpa(pas):
+	print(pas)
+	t = list(pas)
+	rno = pas[0:10]
+	rno = rno.upper()
+	print(rno)
+	pas = "#"+pas[11:]
+	status = check_url()
+	if(status == "down"):
+		return jsonify({'site':'down'})
+	else:
+		t = gpa.cgpa(rno, pas)
+		#if(t == "down"):
+		#	return jsonify({'atd_site':'down'})
+		try:
+			try:
+				#t = int(t)
+				return jsonify({'type':'float','cgpa': t })
+			except:
+				pass
+			try:
+				t = float(t)
+				return jsonify({'type':'float','cgpa': t })
+			except ValueError:
+				return jsonify({'type':'string','cgpa': t })
+		except ValueError:
+			return jsonify({'type':'string','cgpa': t })
+
 @app.route("/period_attendance/<string:pas>", methods=['GET'])
 def period_attendance(pas):
 	print(pas)
