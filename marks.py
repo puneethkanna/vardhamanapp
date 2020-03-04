@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 #th=bt.find_all("th") #3
 #td=bt.find_all("td") #8
 #print str(th[3].text.strip())+":"+str(td[8].text.strip())
-def cgpa():
+def cgpa(rno, pas):
 	br = RoboBrowser(history=True, parser="html.parser")
 	br = RoboBrowser(user_agent='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6')
 	br.open('http://studentscorner.vardhaman.org')
@@ -62,4 +62,3 @@ def sgpa(rno,pas,semid):
 #		print(str(th[i].text.strip()))
 #	except IndexError:
 #	return("I think you have not completed that semester.\nIf you have completed send your rollno to vardhamanassistant@gmail.com stating the issue.")
-sgpa("17881A0526", "#6UYS", "3")
