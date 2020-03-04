@@ -19,8 +19,8 @@ def cgpa(rno, pas):
 	br = RoboBrowser(user_agent='Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6')
 	br.open('http://studentscorner.vardhaman.org')
 	form = br.get_form(action="")
-	form["rollno"] = "17881A0526"
-	form["wak"] = "#6UYS"
+	form["rollno"] = rno
+	form["wak"] = pas
 	br.submit_form(form)
 	br.open("http://studentscorner.vardhaman.org/src_programs/students_corner/CreditRegister/credit_register.php")
 	bt=br.parsed()
